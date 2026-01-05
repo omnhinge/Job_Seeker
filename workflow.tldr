@@ -190,7 +190,7 @@
 							"content": [
 								{
 									"type": "text",
-									"text": "-> site { rating ml model for choosen job title);  *ATS score ;"
+									"text": "-> site { rating ml model for choosen job title ) ;  *ATS score ;"
 								}
 							]
 						},
@@ -233,7 +233,7 @@
 								},
 								{
 									"type": "text",
-									"text": " API for searching relavent jobs;"
+									"text": " API for searching relavent jobs ;"
 								}
 							]
 						},
@@ -277,7 +277,25 @@
 							"type": "paragraph",
 							"attrs": {
 								"dir": "auto"
-							}
+							},
+							"content": [
+								{
+									"type": "text",
+									"text": "-> codolio score for coders only"
+								}
+							]
+						},
+						{
+							"type": "paragraph",
+							"attrs": {
+								"dir": "auto"
+							},
+							"content": [
+								{
+									"type": "text",
+									"text": "-> "
+								}
+							]
 						}
 					]
 				}
