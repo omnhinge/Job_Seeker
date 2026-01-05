@@ -73,7 +73,7 @@
 				"x": 0,
 				"y": 0,
 				"w": 1488,
-				"h": 749.6000366210938
+				"h": 515.2000122070312
 			},
 			"insets": [
 				false,
@@ -116,9 +116,9 @@
 			"typeName": "instance_page_state"
 		},
 		{
-			"x": 0,
-			"y": 0,
-			"z": 1,
+			"x": 63.677080579500554,
+			"y": -32.96545767212416,
+			"z": 0.7917086584748884,
 			"meta": {},
 			"id": "camera:page:page",
 			"typeName": "camera"
@@ -135,10 +135,10 @@
 			"props": {
 				"color": "black",
 				"size": "m",
-				"w": 1253.8875732421875,
+				"w": 889.0875244140625,
 				"font": "draw",
 				"textAlign": "start",
-				"autoSize": true,
+				"autoSize": false,
 				"scale": 1,
 				"richText": {
 					"type": "doc",
@@ -154,7 +154,7 @@
 							"content": [
 								{
 									"type": "text",
-									"text": "site-> login auth0 (firebase hosting end 2 end site) ->upload resume pdf , image(tensorflow) "
+									"text": "site"
 								}
 							]
 						},
@@ -166,7 +166,55 @@
 							"content": [
 								{
 									"type": "text",
-									"text": "-> site { rating ml model for choosen job title) -> "
+									"text": "-> login auth0 (firebase hosting end 2 end site);"
+								}
+							]
+						},
+						{
+							"type": "paragraph",
+							"attrs": {
+								"dir": "auto"
+							},
+							"content": [
+								{
+									"type": "text",
+									"text": "-> upload resume pdf , image(tensorflow / OCR ) ;"
+								}
+							]
+						},
+						{
+							"type": "paragraph",
+							"attrs": {
+								"dir": "auto"
+							},
+							"content": [
+								{
+									"type": "text",
+									"text": "-> site { rating ml model for choosen job title);  *ATS score ;"
+								}
+							]
+						},
+						{
+							"type": "paragraph",
+							"attrs": {
+								"dir": "auto"
+							},
+							"content": [
+								{
+									"type": "text",
+									"text": "-> select your skills and soft skills ;"
+								}
+							]
+						},
+						{
+							"type": "paragraph",
+							"attrs": {
+								"dir": "auto"
+							},
+							"content": [
+								{
+									"type": "text",
+									"text": "-> "
 								},
 								{
 									"type": "text",
@@ -185,7 +233,7 @@
 								},
 								{
 									"type": "text",
-									"text": " API for searching relavent jobs"
+									"text": " API for searching relavent jobs;"
 								}
 							]
 						},
@@ -197,7 +245,127 @@
 							"content": [
 								{
 									"type": "text",
-									"text": "gemini for generating extra skills which may be required for the particular role"
+									"text": "-> gemini for generating extra skills which may be required for the particular role ;"
+								}
+							]
+						},
+						{
+							"type": "paragraph",
+							"attrs": {
+								"dir": "auto"
+							},
+							"content": [
+								{
+									"type": "text",
+									"text": "-> stopping multiple posting of jobs (one role one post)"
+								}
+							]
+						},
+						{
+							"type": "paragraph",
+							"attrs": {
+								"dir": "auto"
+							},
+							"content": [
+								{
+									"type": "text",
+									"text": "-> what is to be done to fit in a particular job role"
+								}
+							]
+						},
+						{
+							"type": "paragraph",
+							"attrs": {
+								"dir": "auto"
+							}
+						}
+					]
+				}
+			},
+			"parentId": "page:page",
+			"index": "a1GzFXQl",
+			"typeName": "shape"
+		},
+		{
+			"x": 1032.6859051893132,
+			"y": 227.954251118318,
+			"rotation": 0,
+			"isLocked": false,
+			"opacity": 1,
+			"meta": {},
+			"id": "shape:TXtrF7dvPYbBBEKSLyu6f",
+			"type": "text",
+			"props": {
+				"color": "black",
+				"size": "m",
+				"w": 406.9624938964844,
+				"font": "draw",
+				"textAlign": "start",
+				"autoSize": true,
+				"scale": 1,
+				"richText": {
+					"type": "doc",
+					"attrs": {
+						"dir": "auto"
+					},
+					"content": [
+						{
+							"type": "paragraph",
+							"attrs": {
+								"dir": "auto"
+							},
+							"content": [
+								{
+									"type": "text",
+									"text": "myjobb : "
+								}
+							]
+						},
+						{
+							"type": "paragraph",
+							"attrs": {
+								"dir": "auto"
+							},
+							"content": [
+								{
+									"type": "text",
+									"text": "direct login with google ;"
+								}
+							]
+						},
+						{
+							"type": "paragraph",
+							"attrs": {
+								"dir": "auto"
+							},
+							"content": [
+								{
+									"type": "text",
+									"text": "my resume -> pdf <5mb not png "
+								}
+							]
+						},
+						{
+							"type": "paragraph",
+							"attrs": {
+								"dir": "auto"
+							},
+							"content": [
+								{
+									"type": "text",
+									"text": "job titles "
+								}
+							]
+						},
+						{
+							"type": "paragraph",
+							"attrs": {
+								"dir": "auto"
+							},
+							"content": [
+								{
+									"type": "text",
+									"text": "skills any number of skills "
 								}
 							]
 						}
@@ -205,7 +373,7 @@
 				}
 			},
 			"parentId": "page:page",
-			"index": "a1GzFXQl",
+			"index": "a2FUUmX8",
 			"typeName": "shape"
 		}
 	]
