@@ -17,7 +17,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 const getGeminiModel = () => {
   // Update from 'gemini-1.5-flash' to a current model
-  return genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+  return genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 };
 
 module.exports = { getGeminiModel };

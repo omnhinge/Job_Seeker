@@ -32,8 +32,10 @@ const extractTextFromPDF = (filePath) => {
         }
 
         if (!text.trim()) {
+          console.error('PDF Parser Warning: Text is empty after extraction');
           reject(new Error('No text could be extracted from PDF'));
         } else {
+          console.log('PDF Parser Success: Extracted', text.length, 'characters');
           resolve(text.trim());
         }
       } catch (error) {

@@ -8,6 +8,11 @@ const calculateATSScore = (resumeText) => {
     skills: 0,
   };
 
+  console.log('--- ATS Scoring Debug ---');
+  console.log('Input Text Length:', resumeText.length);
+  console.log('Input Text Preview:', resumeText.substring(0, 200));
+  console.log('-------------------------');
+
   const lowerText = resumeText.toLowerCase();
 
   // 1. Formatting Score (20 points)
@@ -52,8 +57,24 @@ const calculateATSScore = (resumeText) => {
 
   let keywordMatches = 0;
   commonKeywords.forEach(keyword => {
-    // strict word boundary check for short terms like 'go', 'c', 'r'
-    const pattern = (keyword.length <= 3) ? new RegExp(`\\b${keyword}\\b`, 'i') : new RegExp(keyword, 'i');
+    // Escape special regex characters
+    const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+    // For keywords with special chars (e.g., C++, C#), don't enforce both word boundaries strict
+    // If it starts/ends with a word char, use \b on that side.
+    const startBoundary = /^\w/.test(keyword) ? '\\b' : '';
+    const endBoundary = /\w$/.test(keyword) ? '\\b' : '';
+
+    // For very short words, enforced boundary is safer (e.g. 'go', 'c')
+    // But for 'c++', end boundary \b doesn't work well because + is non-word.
+    // So for c++, we want \bc\+\+(?!\w) or similar.
+    // Simpler heuristic: if encoded keyword ends in non-word, use (?!\w) instead of \b
+
+    const patternStr = (keyword.length <= 3 && /^\w+$/.test(keyword))
+      ? `\\b${escapedKeyword}\\b`
+      : `${startBoundary}${escapedKeyword}${endBoundary}`;
+
+    const pattern = new RegExp(patternStr, 'i');
     if (pattern.test(lowerText)) {
       keywordMatches++;
     }
