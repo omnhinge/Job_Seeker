@@ -8,54 +8,108 @@ const calculateATSScore = (resumeText) => {
     skills: 0,
   };
 
-  // Formatting Score (20 points)
-  const hasEmail = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/.test(resumeText);
-  const hasPhone = /\b\d{10}\b|\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/.test(resumeText);
-  const hasSections = /(experience|education|skills|projects)/gi.test(resumeText);
-  
-  if (hasEmail) breakdown.formatting += 7;
-  if (hasPhone) breakdown.formatting += 7;
-  if (hasSections) breakdown.formatting += 6;
+  const lowerText = resumeText.toLowerCase();
 
-  // Keywords Score (25 points)
-  const technicalKeywords = [
-    'python', 'java', 'javascript', 'react', 'node', 'sql', 'aws', 'docker',
-    'git', 'api', 'agile', 'scrum', 'machine learning', 'data analysis'
+  // 1. Formatting Score (20 points)
+  // Check for common section headers
+  const sectionPatterns = [
+    /experience|work history|employment/i,
+    /education|academic|qualifications/i,
+    /skills|technologies|competencies/i,
+    /projects|portfolio/i
   ];
-  
-  let keywordCount = 0;
-  technicalKeywords.forEach(keyword => {
-    if (new RegExp(keyword, 'gi').test(resumeText)) {
-      keywordCount++;
+
+  let sectionsFound = 0;
+  sectionPatterns.forEach(p => {
+    if (p.test(resumeText)) sectionsFound++;
+  });
+
+  const hasEmail = /\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\b/.test(resumeText);
+  const hasPhone = /\b(\+\d{1,3}[-.]?)?\(?\d{3}\)?[-.]?\d{3}[-.]?\d{4}\b/.test(resumeText);
+
+  if (hasEmail) breakdown.formatting += 5;
+  if (hasPhone) breakdown.formatting += 5;
+  if (sectionsFound >= 3) breakdown.formatting += 10;
+  else if (sectionsFound > 0) breakdown.formatting += 5;
+
+  // 2. Keywords Score (30 points - increased weight)
+  const commonKeywords = [
+    // Languages
+    'javascript', 'python', 'java', 'c++', 'c#', 'ruby', 'php', 'swift', 'kotlin', 'go', 'rust', 'typescript',
+    // Frontend
+    'react', 'angular', 'vue', 'html', 'css', 'sass', 'less', 'redux', 'webpack', 'tailwind', 'bootstrap',
+    // Backend
+    'node', 'express', 'django', 'flask', 'spring', 'laravel', 'asp.net', 'graphql', 'rest api',
+    // Database
+    'sql', 'mysql', 'postgresql', 'mongodb', 'redis', 'elasticsearch', 'oracle', 'dynamodb',
+    // DevOps/Cloud
+    'aws', 'azure', 'gcp', 'docker', 'kubernetes', 'jenkins', 'ci/cd', 'git', 'github', 'gitlab', 'terraform',
+    // Data/AI
+    'machine learning', 'data analysis', 'pandas', 'numpy', 'tensorflow', 'pytorch', 'scikit-learn', 'nlp',
+    // Tools/Concepts
+    'agile', 'scrum', 'jira', 'microservices', 'oop', 'mvc', 'system design', 'testing', 'jest', 'cypress'
+  ];
+
+  let keywordMatches = 0;
+  commonKeywords.forEach(keyword => {
+    // strict word boundary check for short terms like 'go', 'c', 'r'
+    const pattern = (keyword.length <= 3) ? new RegExp(`\\b${keyword}\\b`, 'i') : new RegExp(keyword, 'i');
+    if (pattern.test(lowerText)) {
+      keywordMatches++;
     }
   });
-  breakdown.keywords = Math.min(25, keywordCount * 2);
 
-  // Experience Score (25 points)
-  const experienceMatches = resumeText.match(/\d+\+?\s*(year|yr|years|yrs)/gi);
-  if (experienceMatches) {
-    const years = experienceMatches.map(match => parseInt(match)).reduce((a, b) => a + b, 0);
-    breakdown.experience = Math.min(25, years * 3);
+  // Cap keywords score (target: 10+ keywords for max score)
+  breakdown.keywords = Math.min(30, keywordMatches * 3);
+
+  // 3. Experience Score (25 points)
+  // Look for patterns like "5 years", "5+ yrs", "2019 - Present"
+  const yearPatterns = [
+    /\b(\d+)\+?\s*(years?|yrs?)/i,
+    /(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s*\d{4}/i
+  ];
+
+  let hasExperience = false;
+  let detectedYears = 0;
+
+  const yearsMatch = lowerText.match(/\b(\d+)\+?\s*(years?|yrs?)/i);
+  if (yearsMatch && yearsMatch[1]) {
+    detectedYears = parseInt(yearsMatch[1]);
+    hasExperience = true;
+  } else if (/\d{4}\s*-\s*(present|current|\d{4})/i.test(lowerText)) {
+    // Rough heuristic: if dates found, assume at least some experience
+    hasExperience = true;
+    detectedYears = 1; // Minimum baseline
   }
 
-  // Education Score (15 points)
-  const educationKeywords = ['bachelor', 'master', 'phd', 'degree', 'university', 'college', 'b.tech', 'm.tech'];
-  educationKeywords.forEach(keyword => {
-    if (new RegExp(keyword, 'gi').test(resumeText)) {
-      breakdown.education += 5;
-    }
+  if (hasExperience) {
+    // Scale: 5+ years = max score
+    breakdown.experience = Math.min(25, 10 + (detectedYears * 3));
+  }
+
+  // 4. Education Score (15 points)
+  const educationKeywords = [
+    'bachelor', 'master', 'phd', 'degree', 'diploma', 'certificate',
+    'university', 'college', 'institute', 'b.tech', 'm.tech', 'b.sc', 'm.sc', 'b.a', 'm.a', 'mba', 'bba'
+  ];
+
+  let educationMatches = 0;
+  educationKeywords.forEach(kw => {
+    if (lowerText.includes(kw)) educationMatches++;
   });
-  breakdown.education = Math.min(15, breakdown.education);
 
-  // Skills Score (15 points)
-  const skillsSectionMatch = resumeText.match(/skills?[\s\S]{0,500}/gi);
-  if (skillsSectionMatch) {
-    const skillsText = skillsSectionMatch[0];
-    const skillCount = skillsText.split(/[,\n•]/).length;
-    breakdown.skills = Math.min(15, skillCount * 1.5);
+  if (educationMatches > 0) {
+    breakdown.education = Math.min(15, 5 + (educationMatches * 5));
   }
 
-  // Calculate total score
+  // 5. Skills Section Score (10 points)
+  // Check if skills are listed (heuristic: many comma-separated values or bullet points near "Skills")
+  if (/skills?|technologies/i.test(lowerText)) {
+    // Just presence of section gives points, density handles keywords score
+    breakdown.skills = 10;
+  }
+
+  // Calculate Total
   score = Object.values(breakdown).reduce((a, b) => a + b, 0);
 
   return {
