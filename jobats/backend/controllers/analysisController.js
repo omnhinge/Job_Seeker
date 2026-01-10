@@ -384,55 +384,90 @@ function generateFallbackJobSuggestions(resumeText) {
  * Helper: Generate fallback career plan
  */
 function generateFallbackCareerPlan(targetJob) {
+  const jobTitle = targetJob.toLowerCase();
+
+  // Define skill mappings for common roles
+  const roleMappings = [
+    {
+      keywords: ['frontend', 'react', 'angular', 'vue', 'web', 'ui', 'interface'],
+      skills: ["React/Vue/Angular", "JavaScript/TypeScript", "CSS/Tailwind", "Responsive Design", "State Management"],
+      missing: ["Next.js", "Web Performance Optimization", "Testing (Jest/Cypress)"]
+    },
+    {
+      keywords: ['backend', 'node', 'express', 'java', 'python', 'api', 'server', 'sql'],
+      skills: ["API Design (REST/GraphQL)", "Database Management", "Server-side Logic", "Authentication/Security", "System Design"],
+      missing: ["Microservices", "Containerization (Docker)", "Cloud Services (AWS/GCP)"]
+    },
+    {
+      keywords: ['full stack', 'fullstack', 'mern', 'mean'],
+      skills: ["Frontend Frameworks", "Backend Development", "Database Design", "API Integration", "Version Control"],
+      missing: ["DevOps Basics", "System Architecture", "Advanced Security"]
+    },
+    {
+      keywords: ['data', 'scientist', 'analyst', 'machine learning', 'ai', 'ml'],
+      skills: ["Python/R", "Data Visualization", "Statistical Analysis", "Machine Learning Algorithms", "SQL"],
+      missing: ["Deep Learning", "Big Data Tools (Spark/Hadoop)", "Model Deployment"]
+    },
+    {
+      keywords: ['designer', 'ux', 'ui', 'product design'],
+      skills: ["Figma/Adobe XD", "User Research", "Prototyping", "Visual Design", "Wireframing"],
+      missing: ["Design Systems", "Interaction Design", "Frontend Basics"]
+    },
+    {
+      keywords: ['manager', 'management', 'lead', 'product owner'],
+      skills: ["Project Management", "Team Leadership", "Strategic Planning", "Stakeholder Communication", "Agile/Scrum"],
+      missing: ["Risk Management", "Product Analytics", "Budgeting"]
+    }
+  ];
+
+  // Find matching role
+  const match = roleMappings.find(role =>
+    role.keywords.some(keyword => jobTitle.includes(keyword))
+  );
+
+  const requiredSkills = match ? match.skills : [
+    "Technical Proficiency",
+    "Industry Knowledge",
+    "Problem Solving",
+    "Communication",
+    "Project Management"
+  ];
+
+  const missingSkills = match ? match.missing : [
+    "Advanced Specialized Tools",
+    "Leadership Experience",
+    "Strategic Analysis"
+  ];
+
   return {
-    requiredSkills: [
-      "Technical Proficiency",
-      "Problem Solving",
-      "Communication Skills",
-      "Team Collaboration",
-      "Time Management"
-    ],
-    missingSkills: [
-      "Advanced Programming Concepts",
-      "Industry Tools & Frameworks",
-      "Project Management"
-    ],
-    careerPlan: `**Month 1: Foundation & Skill Assessment**
+    requiredSkills,
+    missingSkills,
+    careerPlan: `**Month 1: ${match ? 'Core Concept Mastery' : 'Foundation Building'}**
 
-* **Goal:** Strengthen core technical fundamentals and identify skill gaps for ${targetJob}
+* **Goal:** ${match ? `Solidify your understanding of core ${targetJob} principles` : `Establish a strong professional foundation for ${targetJob}`}
 * **Activities:**
-    * Complete 2-3 online courses focused on core competencies (Coursera, Udemy, or LinkedIn Learning)
-    * Build 1-2 small projects to practice fundamental concepts
-    * Join relevant online communities (Reddit, Discord, LinkedIn groups)
-    * Review and update your resume with new skills
-* **Deliverables:** Completed courses with certificates, 2 small projects on GitHub, updated resume
+    *   **Week 1-2:** Deep dive into ${requiredSkills[0]} and ${requiredSkills[1]} through structured courses (Udemy/Coursera).
+    *   **Week 3:** Build a small proof-of-concept project focusing on ${requiredSkills[2]}.
+    *   **Week 4:** Analyze 5 job descriptions for "${targetJob}" to identify specific tool gaps.
+* **Deliverables:** Completed course certificates, 1 mini-project, and a personalized learning roadmap.
 
-**Month 2: Intermediate Skills & Portfolio Building**
+**Month 2: ${match ? 'Advanced Implementation' : 'Skill Expansion'}**
 
-* **Goal:** Develop intermediate-level expertise and build a strong portfolio
+* **Goal:** Apply skills to real-world scenarios and fill identified gaps
 * **Activities:**
-    * Work on 1-2 medium-complexity projects that showcase your skills
-    * Contribute to open-source projects on GitHub
-    * Network with professionals in your target role (LinkedIn, Meetups)
-    * Practice technical interviews on platforms like LeetCode or HackerRank
-* **Deliverables:** 2 portfolio-worthy projects, 5+ GitHub contributions, expanded professional network
+    *   **Week 1-2:** Start a significant personal project using ${match ? match.skills[3] : 'industry standard tools'}.
+    *   **Week 3:** Focus on strictly learning ${missingSkills[0]} to enhance your marketability.
+    *   **Week 4:** Contribute to an open-source project or volunteer to solve a real ${targetJob} problem.
+* **Deliverables:** A deploying/working main project, code samples, or case studies.
 
-**Month 3: Advanced Practice & Job Preparation**
+**Month 3: ${match ? 'Professional Portfolio & Networking' : 'Market Readiness'}**
 
-* **Goal:** Achieve job-ready proficiency and start applying
+* **Goal:** Showcase your expertise and prepare for interviews
 * **Activities:**
-    * Complete 1 comprehensive capstone project relevant to ${targetJob}
-    * Conduct mock interviews with peers or mentors
-    * Optimize LinkedIn profile and portfolio website
-    * Apply to 10-15 positions weekly
-    * Attend industry events or webinars
-* **Deliverables:** Professional portfolio, polished resume, active job applications, interview readiness
-
-**Additional Recommendations:**
-* Set aside 2-3 hours daily for focused learning
-* Track your progress weekly
-* Seek feedback from mentors or peers
-* Stay consistent and don't get discouraged by setbacks`
+    *   **Week 1-2:** Finalize your portfolio with case studies highlighting your use of ${requiredSkills[0]}.
+    *   **Week 3:** Practice interview questions specific to ${targetJob} (Technical and Behavioral).
+    *   **Week 4:** Optimize your LinkedIn profile and apply to 10 targeted roles.
+* **Deliverables:** Polished portfolio, updated resume, and active job applications.`
   };
 }
 

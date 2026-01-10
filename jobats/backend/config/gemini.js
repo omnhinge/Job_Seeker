@@ -1,23 +1,24 @@
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
-// Check if API key exists
 if (!process.env.GEMINI_API_KEY) {
-  console.error('❌ GEMINI_API_KEY is not set in .env file!');
+  console.error('❌ Gemini API key nahi mila .env file mein!');
   process.exit(1);
 }
 
-if (process.env.GEMINI_API_KEY.length < 30) {
-  console.error('❌ GEMINI_API_KEY appears to be invalid (too short)');
-  process.exit(1);
-}
-
-console.log('✅ Gemini API Key loaded (length:', process.env.GEMINI_API_KEY.length + ')');
+console.log('✅ Gemini API Key loaded');
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 const getGeminiModel = () => {
-  // Update from 'gemini-1.5-flash' to a current model
-  return genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  return genAI.getGenerativeModel({
+    model: 'gemini-2.5-flash',
+    generationConfig: {
+      temperature: 0.8,
+      topP: 0.95,
+      topK: 40,
+      maxOutputTokens: 8192,
+    },
+  });
 };
 
 module.exports = { getGeminiModel };
