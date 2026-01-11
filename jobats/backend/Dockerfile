@@ -1,16 +1,13 @@
 FROM node:18-alpine
-
-# Use /app as the folder INSIDE the container
 WORKDIR /app
 
-# Copy files from the CURRENT folder (.) to the container (.)
-COPY package*.json ./
+# Since we are starting from the root, we point to the backend folder
+COPY Job_Seeker/jobats/backend/package*.json ./
 RUN npm install
 
-# Copy everything else from the backend folder
-COPY . .
+# Copy all files from the backend folder into the container
+COPY Job_Seeker/jobats/backend/ . 
 
-# IMPORTANT: Ensure your server.js uses process.env.PORT
 ENV PORT=10000
 EXPOSE 10000
 
