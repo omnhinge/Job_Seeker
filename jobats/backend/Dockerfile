@@ -1,14 +1,17 @@
 FROM node:18-alpine
+
+# Use /app as the folder INSIDE the container
 WORKDIR /app
 
-# Since Render is already inside 'backend', 
-# we copy files from the CURRENT directory (.)
+# Copy files from the CURRENT folder (.) to the container (.)
 COPY package*.json ./
 RUN npm install
-COPY . . 
 
-# Use the port assigned by Render
-ENV PORT=5000
-EXPOSE ${PORT}
+# Copy everything else from the backend folder
+COPY . .
+
+# IMPORTANT: Ensure your server.js uses process.env.PORT
+ENV PORT=10000
+EXPOSE 10000
 
 CMD ["node", "server.js"]
