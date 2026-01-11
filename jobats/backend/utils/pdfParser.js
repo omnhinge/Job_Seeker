@@ -1,7 +1,7 @@
 const fs = require('fs');
 const PDFParser = require('pdf2json');
 
-const extractTextFromPDF = (filePath) => {
+const extractTextFromPDF = (input) => {
   return new Promise((resolve, reject) => {
     const pdfParser = new PDFParser(null, 1);
 
@@ -43,7 +43,11 @@ const extractTextFromPDF = (filePath) => {
       }
     });
 
-    pdfParser.loadPDF(filePath);
+    if (Buffer.isBuffer(input)) {
+      pdfParser.parseBuffer(input);
+    } else {
+      pdfParser.loadPDF(input);
+    }
   });
 };
 

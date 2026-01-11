@@ -24,11 +24,7 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Create uploads directory
-const fs = require('fs');
-if (!fs.existsSync('./uploads')) {
-  fs.mkdirSync('./uploads');
-}
+
 
 // Routes
 app.use('/api/resume', resumeRoutes);
@@ -49,9 +45,3 @@ app.listen(PORT, () => {
 });
 // ```
 
-// #### 1.18 Create `backend/.gitignore`
-// ```
-// node_modules/
-// .env
-// uploads/
-// *.log

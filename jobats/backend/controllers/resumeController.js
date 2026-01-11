@@ -4,7 +4,7 @@ const { extractTextFromPDF } = require('../utils/pdfParser');
 exports.uploadResume = async (req, res, next) => {
   try {
     const { email } = req.body;
-    
+
     if (!req.file) {
       return res.status(400).json({
         success: false,
@@ -13,22 +13,22 @@ exports.uploadResume = async (req, res, next) => {
     }
 
     // Extract text from PDF
-    const extractedText = await extractTextFromPDF(req.file.path);
+    const extractedText = await extractTextFromPDF(req.file.buffer);
 
     // Check if email already exists and update, or create new
     let resume = await Resume.findOne({ email });
-    
+
     if (resume) {
-      resume.fileName = req.file.filename;
-      resume.filePath = req.file.path;
+      resume.fileName = req.file.originalname;
+      resume.filePath = 'memory-storage'; // No local file path in production
       resume.extractedText = extractedText;
       resume.lastUpdated = Date.now();
       await resume.save();
     } else {
       resume = await Resume.create({
         email,
-        fileName: req.file.filename,
-        filePath: req.file.path,
+        fileName: req.file.originalname,
+        filePath: 'memory-storage',
         extractedText,
       });
     }
@@ -50,9 +50,9 @@ exports.uploadResume = async (req, res, next) => {
 exports.getResume = async (req, res, next) => {
   try {
     const { email } = req.params;
-    
+
     const resume = await Resume.findOne({ email });
-    
+
     if (!resume) {
       return res.status(404).json({
         success: false,
