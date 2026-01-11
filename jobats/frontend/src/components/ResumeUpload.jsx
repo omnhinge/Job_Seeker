@@ -96,6 +96,7 @@ const ResumeUpload = ({ onUploadSuccess }) => {
             <input
               type="email"
               id="email"
+              autocomplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="your.email@example.com"
