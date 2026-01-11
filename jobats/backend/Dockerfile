@@ -1,17 +1,14 @@
 FROM node:18-alpine
-
 WORKDIR /app
 
-# Copy package files first to cache dependencies
+# Since Render is already inside 'backend', 
+# we copy files from the CURRENT directory (.)
 COPY package*.json ./
-
-# Install dependencies
 RUN npm install
+COPY . . 
 
-# Copy the rest of the code
-COPY . .
-# Expose port
-EXPOSE 5000
+# Use the port assigned by Render
+ENV PORT=5000
+EXPOSE ${PORT}
 
-# Start command
 CMD ["node", "server.js"]
